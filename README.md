@@ -1,6 +1,6 @@
 ## Mesh Edit
 
-build instructions:
+### build instructions
 1. install rust and cargo, [here](https://rustup.rs/).
 2. clone repo
    ```bash
@@ -10,5 +10,23 @@ build instructions:
    ```bash
    cargo run
 
-TODOs:
+### TODOs
+- [x] hello triangle
+- [ ] mesh representation (index face set?)
+- [ ] render cube
+- [ ] 3d camera and navigation
+- [ ] input handling
+- [ ] mesh utils
+   - [ ] mesh traversal 
+- [ ] vertex/face selection
+- [ ] gizmo
+- [ ] file io
+- [ ] ui implementation
+- [ ] mesh transformations
+   - [ ] extrude face
+   - [ ] bridge verticies
+   - [ ] loop cut 
+
+
+
 WIP
