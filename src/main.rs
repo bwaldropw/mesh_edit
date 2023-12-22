@@ -25,30 +25,53 @@ fn setup(
     settings: Res<settings::UserSettings>,
 ) {
     // TODO import mesh
+    // TODO hot reload
+    // TODO mesh utils
+
+
     let vertices = [
-        ([0.0, 0.0, 0.0], [0.0, 1.0, 0.0], [1.0, 1.0]),
-        ([1.0, 2.0, 1.0], [0.0, 1.0, 0.0], [1.0, 1.0]),
-        ([2.0, 0.0, 0.0], [0.0, 1.0, 0.0], [1.0, 1.0]),
+        ([-0.5, -0.5, -0.5], [0.0, 0.0, -1.0]), // Vertex 0: Bottom-back-left
+        ([0.5, -0.5, -0.5], [0.0, 0.0, -1.0]),  // Vertex 1: Bottom-back-right
+        ([0.5, 0.5, -0.5], [0.0, 0.0, -1.0]),   // Vertex 2: Top-back-right
+        ([-0.5, 0.5, -0.5], [0.0, 0.0, -1.0]),  // Vertex 3: Top-back-left
+        ([-0.5, -0.5, 0.5], [0.0, 0.0, 1.0]),   // Vertex 4: Bottom-front-left
+        ([0.5, -0.5, 0.5], [0.0, 0.0, 1.0]),    // Vertex 5: Bottom-front-right
+        ([0.5, 0.5, 0.5], [0.0, 0.0, 1.0]),     // Vertex 6: Top-front-right
+        ([-0.5, 0.5, 0.5], [0.0, 0.0, 1.0]),    // Vertex 7: Top-front-left
     ];
 
-    let indices = mesh::Indices::U32(vec![0, 2, 1, 0, 3, 2]);
+    // TODO fix normals
+
+    let indices = vec![
+        0, 2, 1, 0, 3, 2, // Back face
+        4, 5, 6, 4, 6, 7, // Front face
+        0, 1, 5, 0, 5, 4, // Bottom face
+        2, 7, 6, 2, 3, 7, // Top face
+        0, 4, 7, 0, 7, 3, // Left face
+        1, 2, 6, 1, 6, 5, // Right face
+    ];
 
     let mut positions = Vec::new();
     let mut normals = Vec::new();
 
-    for (position, normal, _uv) in vertices.iter() {
+    for (position, normal) in vertices.iter() {
         positions.push(*position);
         normals.push(*normal);
     }
 
     let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
-    mesh.set_indices(Some(indices));
+    mesh.set_indices(Some(mesh::Indices::U32(indices)));
     mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, positions);
     mesh.insert_attribute(Mesh::ATTRIBUTE_NORMAL, normals);
 
+    let material = StandardMaterial {
+        base_color: Color::rgb(0.898, 0.918, 0.941),
+        ..default()
+    };
+
     commands.spawn(PbrBundle {
         mesh: meshes.add(mesh),
-        material: materials.add(Color::rgb(0.898, 0.918, 0.941).into()),
+        material: materials.add(material),
         ..default()
     });
 
