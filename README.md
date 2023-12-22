@@ -11,8 +11,7 @@
    cargo run
 
 ### TODOs
-- [x] hello triangle
-- [ ] mesh representation (index face set?)
+- [ ] mesh representation
 - [x] render cube
    - [ ] fix normals
 - [ ] dev ui
@@ -28,7 +27,7 @@
 - [ ] ui implementation
 - [ ] mesh transformations
    - [ ] extrude face
-   - [ ] bridge verticies
+   - [ ] bridge vertices
    - [ ] loop cut 
 
 ### Dependencies
