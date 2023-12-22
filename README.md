@@ -15,6 +15,7 @@
 - [ ] mesh representation (index face set?)
 - [ ] render cube
 - [ ] 3d camera and navigation
+   - [ ] keybinds
 - [ ] input handling
 - [ ] mesh utils
    - [ ] mesh traversal 
@@ -27,6 +28,11 @@
    - [ ] bridge verticies
    - [ ] loop cut 
 
-
+### Dependencies
+```
+[dependencies]
+bevy = "0.12"
+bevy_panorbit_camera = "0.9.2"
+```
 
 WIP
