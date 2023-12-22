@@ -13,8 +13,11 @@
 ### TODOs
 - [x] hello triangle
 - [ ] mesh representation (index face set?)
-- [ ] render cube
-- [ ] 3d camera and navigation
+- [x] render cube
+   - [ ] fix normals
+- [ ] dev ui
+   - [ ] show fps 
+- [x] 3d camera and navigation
    - [ ] keybinds
 - [ ] input handling
 - [ ] mesh utils
