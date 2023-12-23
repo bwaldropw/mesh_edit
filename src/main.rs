@@ -1,4 +1,5 @@
 mod settings;
+mod mesh_utils;
 
 use bevy::prelude::*;
 use bevy::render::mesh::{self, PrimitiveTopology};
@@ -30,14 +31,14 @@ fn setup(
 
 
     let vertices = [
-        ([-0.5, -0.5, -0.5], [0.0, 0.0, -1.0]), // Vertex 0: Bottom-back-left
-        ([0.5, -0.5, -0.5], [0.0, 0.0, -1.0]),  // Vertex 1: Bottom-back-right
-        ([0.5, 0.5, -0.5], [0.0, 0.0, -1.0]),   // Vertex 2: Top-back-right
-        ([-0.5, 0.5, -0.5], [0.0, 0.0, -1.0]),  // Vertex 3: Top-back-left
-        ([-0.5, -0.5, 0.5], [0.0, 0.0, 1.0]),   // Vertex 4: Bottom-front-left
-        ([0.5, -0.5, 0.5], [0.0, 0.0, 1.0]),    // Vertex 5: Bottom-front-right
-        ([0.5, 0.5, 0.5], [0.0, 0.0, 1.0]),     // Vertex 6: Top-front-right
-        ([-0.5, 0.5, 0.5], [0.0, 0.0, 1.0]),    // Vertex 7: Top-front-left
+        Vec3::new(-0.5, -0.5, -0.5), // Vertex 0: Bottom-back-left
+        Vec3::new(0.5, -0.5, -0.5),  // Vertex 1: Bottom-back-right
+        Vec3::new(0.5, 0.5, -0.5),   // Vertex 2: Top-back-right
+        Vec3::new(-0.5, 0.5, -0.5),  // Vertex 3: Top-back-left
+        Vec3::new(-0.5, -0.5, 0.5),   // Vertex 4: Bottom-front-left
+        Vec3::new(0.5, -0.5, 0.5),    // Vertex 5: Bottom-front-right
+        Vec3::new(0.5, 0.5, 0.5),     // Vertex 6: Top-front-right
+        Vec3::new(-0.5, 0.5, 0.5),    // Vertex 7: Top-front-left
     ];
 
     // TODO fix normals
@@ -52,15 +53,18 @@ fn setup(
     ];
 
     let mut positions = Vec::new();
-    let mut normals = Vec::new();
+    let normals = mesh_utils::calculate_normals(&vertices, &indices);
 
-    for (position, normal) in vertices.iter() {
+    for normal in normals.iter() {
+        println!("{:?}", normal);
+    }
+
+    for position in vertices.iter() {
         positions.push(*position);
-        normals.push(*normal);
     }
 
     let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
-    mesh.set_indices(Some(mesh::Indices::U32(indices)));
+    mesh.set_indices(Some(mesh::Indices::U32(indices.clone())));
     mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, positions);
     mesh.insert_attribute(Mesh::ATTRIBUTE_NORMAL, normals);
 
@@ -93,3 +97,4 @@ fn setup(
         },
     ));
 }
+
