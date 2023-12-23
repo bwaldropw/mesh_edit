@@ -11,10 +11,12 @@
    cargo run
 
 ### TODOs
-- [x] hello triangle
-- [ ] mesh representation (index face set?)
-- [ ] render cube
-- [ ] 3d camera and navigation
+- [ ] mesh representation
+- [x] render cube
+   - [ ] fix normals
+- [ ] dev ui
+   - [ ] show fps 
+- [x] 3d camera and navigation
    - [ ] keybinds
 - [ ] input handling
 - [ ] mesh utils
@@ -25,7 +27,7 @@
 - [ ] ui implementation
 - [ ] mesh transformations
    - [ ] extrude face
-   - [ ] bridge verticies
+   - [ ] bridge vertices
    - [ ] loop cut 
 
 ### Dependencies
