@@ -35,6 +35,7 @@
 [dependencies]
 bevy = "0.12"
 bevy_panorbit_camera = "0.9.2"
+tobj = "4.0.0"
 ```
 
 WIP

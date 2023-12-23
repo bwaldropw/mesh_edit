@@ -1,28 +1,50 @@
 use bevy::math::Vec3;
+use tobj;
 
-pub fn calculate_normals(vertices: &[Vec3], indices: &[u32]) -> Vec<Vec3> {
-    let mut normals = vec![Vec3::new(0.0, 0.0, 0.0); vertices.len()];
+pub fn load_cube() -> (Vec<Vec3>, Vec<Vec3>, Vec<u32>) {
+    let obj_file = "./assets/cube.obj";
 
-    for chunk in indices.chunks(3) {
-        if let [i0, i1, i2] = chunk {
-            let v0 = vertices[*i0 as usize];
-            let v1 = vertices[*i1 as usize];
-            let v2 = vertices[*i2 as usize];
+    let lopts = tobj::LoadOptions {
+        triangulate: true,
+        single_index: true,
+        ..Default::default()
+    };
 
-            let edge1 = v1 - v0;
-            let edge2 = v2 - v0;
+    let (models, _materials) = tobj::load_obj(&obj_file, &lopts).expect("Failed to OBJ load file");
 
-            let triangle_normal = edge1.cross(edge2).normalize();
+    let cube = models[0].clone();
+    let mesh = cube.mesh;
 
-            normals[*i0 as usize] += triangle_normal;
-            normals[*i1 as usize] += triangle_normal;
-            normals[*i2 as usize] += triangle_normal;
-        }
+    let positions = mesh.positions;
+    let normals = mesh.normals;
+    let indices = mesh.indices;
+
+    let mut vec3_positions: Vec<Vec3> = Vec::new();
+    let mut vec3_normals: Vec<Vec3> = Vec::new();
+
+    for position in positions.chunks(3) {
+        let x = position[0];
+        let y = position[1];
+        let z = position[2];
+
+        let vec3 = Vec3::new(x, y, z);
+        vec3_positions.push(vec3);
     }
-    
-    for normal in &mut normals {
-        *normal = normal.normalize();
+
+    for normal in normals.chunks(3) {
+        let x = normal[0];
+        let y = normal[1];
+        let z = normal[2];
+
+        let vec3 = Vec3::new(x, y, z);
+        vec3_normals.push(vec3);
     }
 
-    normals
+    println!("{:?}", vec3_positions);
+    println!{"{}", vec3_positions.len()};
+    println!("{:?}", vec3_normals);
+    println!{"{}", vec3_normals.len()};
+    println!("{:?}", indices);
+
+    (vec3_positions, vec3_normals, indices)
 }
