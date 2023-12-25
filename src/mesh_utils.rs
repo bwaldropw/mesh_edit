@@ -1,5 +1,17 @@
-use bevy::math::Vec3;
+use bevy::{math::Vec3, ecs::system::Resource};
 use tobj;
+
+pub struct IndexedFaceSet {
+    pub positions: Vec<Vec3>,
+    pub normals: Vec<Vec3>,
+    pub indices: Vec<u32>,
+}
+
+#[derive(Resource)]
+pub struct SelectionContext {
+    pub vertex_ids: Vec<u32>,
+    pub mesh: IndexedFaceSet,
+}
 
 pub fn load_cube() -> (Vec<Vec3>, Vec<Vec3>, Vec<u32>) {
     let obj_file = "./assets/cube.obj";
@@ -47,4 +59,11 @@ pub fn load_cube() -> (Vec<Vec3>, Vec<Vec3>, Vec<u32>) {
     println!("{:?}", indices);
 
     (vec3_positions, vec3_normals, indices)
+}
+
+pub fn increment_x(context: &mut SelectionContext, id: usize) {
+    let mut position = context.mesh.positions[id];
+    position[0] += 1.0;
+    println!("new position of vertex {}: {:?}", id, position);
+    context.mesh.positions[id] = position;
 }

@@ -13,15 +13,16 @@
 ### TODOs
 - [ ] mesh representation
 - [x] render cube
-   - [ ] fix normals
 - [ ] dev ui
    - [ ] show fps 
+   - [ ] console
 - [x] 3d camera and navigation
    - [ ] keybinds
 - [ ] input handling
 - [ ] mesh utils
    - [ ] mesh traversal 
 - [ ] vertex/face selection
+   - [ ] vertex and wireframe shaders
 - [ ] gizmo
 - [ ] file io
 - [ ] ui implementation
