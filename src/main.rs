@@ -19,14 +19,6 @@ fn main() {
             pan_sensitivity: 1.0,
             zoom_sensitivity: 0.5,
         })
-        .insert_resource(mesh_utils::SelectionContext {
-            vertex_ids: Vec::new(),
-            mesh: mesh_utils::IndexedFaceSet {
-                positions: Vec::new(),
-                normals: Vec::new(),
-                indices: Vec::new(),
-            },
-        })
         .add_plugins((DefaultPlugins, PanOrbitCameraPlugin))
         .add_systems(Startup, setup)
         .run();
@@ -37,24 +29,14 @@ fn setup(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
     mut settings: ResMut<settings::UserSettings>,
-    mut context: ResMut<mesh_utils::SelectionContext>,
 ) {
     
     let (positions, normals, indices) = mesh_utils::load_cube();
-    context.mesh.normals = normals;
-    context.mesh.positions = positions;
-    context.mesh.indices = indices;
 
     let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
-    mesh.set_indices(Some(mesh::Indices::U32(context.mesh.indices.clone())));
-    mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, context.mesh.positions.clone());
-    mesh.insert_attribute(Mesh::ATTRIBUTE_NORMAL, context.mesh.normals.clone());
-
-    context.vertex_ids.push(1);
-
-    println!("selected vertex ids: {:?}", context.vertex_ids);
-    mesh_utils::increment_x(&mut context, 0);
-    mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, context.mesh.positions.clone());
+    mesh.set_indices(Some(mesh::Indices::U32(indices)));
+    mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, positions);
+    mesh.insert_attribute(Mesh::ATTRIBUTE_NORMAL, normals);
 
     let material = StandardMaterial {
         base_color: Color::rgb(0.898, 0.918, 0.941),
@@ -84,11 +66,4 @@ fn setup(
             ..default()
         },
     ));
-}
-
-fn mesh_editor(
-    mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
-) {
 }

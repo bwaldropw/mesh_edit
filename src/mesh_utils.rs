@@ -1,19 +1,6 @@
-use bevy::{math::Vec3, ecs::system::Resource};
 use tobj;
 
-pub struct IndexedFaceSet {
-    pub positions: Vec<Vec3>,
-    pub normals: Vec<Vec3>,
-    pub indices: Vec<u32>,
-}
-
-#[derive(Resource)]
-pub struct SelectionContext {
-    pub vertex_ids: Vec<u32>,
-    pub mesh: IndexedFaceSet,
-}
-
-pub fn load_cube() -> (Vec<Vec3>, Vec<Vec3>, Vec<u32>) {
+pub fn load_cube() -> (Vec<[f32; 3]>, Vec<[f32; 3]>, Vec<u32>) {
     let obj_file = "./assets/cube.obj";
 
     let lopts = tobj::LoadOptions {
@@ -31,16 +18,16 @@ pub fn load_cube() -> (Vec<Vec3>, Vec<Vec3>, Vec<u32>) {
     let normals = mesh.normals;
     let indices = mesh.indices;
 
-    let mut vec3_positions: Vec<Vec3> = Vec::new();
-    let mut vec3_normals: Vec<Vec3> = Vec::new();
+    let mut positions_array: Vec<[f32; 3]> = Vec::new();
+    let mut normals_array: Vec<[f32; 3]> = Vec::new();
 
     for position in positions.chunks(3) {
         let x = position[0];
         let y = position[1];
         let z = position[2];
 
-        let vec3 = Vec3::new(x, y, z);
-        vec3_positions.push(vec3);
+        let array = [x, y, z];
+        positions_array.push(array);
     }
 
     for normal in normals.chunks(3) {
@@ -48,22 +35,15 @@ pub fn load_cube() -> (Vec<Vec3>, Vec<Vec3>, Vec<u32>) {
         let y = normal[1];
         let z = normal[2];
 
-        let vec3 = Vec3::new(x, y, z);
-        vec3_normals.push(vec3);
+        let array = [x, y, z];
+        normals_array.push(array);
     }
 
-    println!("{:?}", vec3_positions);
-    println!{"{}", vec3_positions.len()};
-    println!("{:?}", vec3_normals);
-    println!{"{}", vec3_normals.len()};
+    println!("{:?}", positions_array);
+    println! {"{}", positions_array.len()};
+    println!("{:?}", normals_array);
+    println! {"{}", normals_array.len()};
     println!("{:?}", indices);
 
-    (vec3_positions, vec3_normals, indices)
-}
-
-pub fn increment_x(context: &mut SelectionContext, id: usize) {
-    let mut position = context.mesh.positions[id];
-    position[0] += 1.0;
-    println!("new position of vertex {}: {:?}", id, position);
-    context.mesh.positions[id] = position;
+    (positions_array, normals_array, indices)
 }
